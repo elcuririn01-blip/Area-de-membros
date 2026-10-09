@@ -1,90 +1,87 @@
-# 🧸 Bordado Perfeito · Área de Membros Infantil & Aconchegante
+# 🧸 Bordado Perfecto · Área de Miembros Infantil & Acogedora
 
-Uma área de membros completa, moderna, acolhedora e minimalista para ateliê de bordado computadorizado, contendo todo o acervo de **3.764 matrizes infantis** organizadas por temas, coleções e formatos de máquinas.
+Una plataforma moderna, acogedora y minimalista diseñada especialmente para talleres y artesanas del bordado computarizado, con un catálogo completo de más de **3.700 matrices infantiles** organizadas por temas, colecciones y marcas de máquinas bordadoras.
 
 ---
 
-## ✨ Principais Diferenciais e Melhorias
+## ✨ Características Principales & Diferenciales
 
-1. **Design Aconchegante & Minimalista ("Estilo Infantil")**:
-   - Paleta de cores em tons pastéis suaves (Rosa Bebê, Amarelinho Manteiga, Menta, Azul Nuvem e Linho Suave).
-   - Detalhes artesanais de costura pontilhada (*embroidery stitches*) nos cards e botões.
-   - Tipografia amigável e legível: **Fredoka** para títulos acolhedores e **Nunito** para especificações técnicas claras.
-   - Micro-interações agradáveis e suaves, sem poluição visual.
+1. **Diseño Acogedor & Minimalista (Estilo Infantil / Taller de Bordado)**:
+   - Paleta de colores en tonos pasteles cálidos (Rosa Fresa Bebé, Amarillo Mantequilla, Menta Suave, Azul Nube y Lino Natural).
+   - Detalles artesanales con costuras decorativas pespunteadas (*embroidery dashed stitches*) en tarjetas y botones.
+   - Tipografía tierna y súper legible: **Fredoka** para títulos redondos y **Nunito** para especificaciones técnicas y lectura clara.
+   - Microinteracciones agradables y suaves, sin sobrecarga visual y con cero efectos borrosos molestos.
 
-2. **Mesmos Links de Acesso Originais & Integração Total**:
-   - Todas as **3.764 capas** carregam em alta definição diretamente do servidor.
-   - Download individual de qualquer matriz nos 5 principais formatos: **PES** (Brother), **JEF** (Janome), **DST** (Tajima/Industriais), **EXP** (Bernina/Melco) e **XXX** (Singer).
-   - Download de todas as **30 coleções completas em formato ZIP**.
-   - Download do **Acervo Inteiro de uma só vez em ZIP** em qualquer formato selecionado.
+2. **Enlaces de Acceso Originales & Compatibilidad Total**:
+   - Todas las **3.764 portadas** se visualizan en alta definición directamente desde el servidor.
+   - Descarga individual de cada matriz en los 5 formatos principales:
+     - **PES** (Brother, Baby Lock, Bernina Deco)
+     - **JEF** (Janome, Elna, Kenmore)
+     - **DST** (Tajima, Barudan, Industriales, SWF)
+     - **EXP** (Bernina, Melco)
+     - **XXX** (Singer, Compucon)
+   - Descarga directa de **cada colección completa en formato ZIP**.
+   - Descarga directa de **todo el catálogo completo en un único archivo ZIP** en el formato seleccionado.
 
-3. **Busca Instantânea Inteligente**:
-   - Busca em tempo real sem travamentos.
-   - Não diferencia acentos nem maiúsculas/minúsculas.
-   - Busca por nome da matriz, coleção, categoria, medida ou bastidor.
-   - Botões de sugestão rápida (Ursinhos, Safári, Enxoval, Flores, Alfabetos, Dinossauros, Nomes).
+3. **Búsqueda Instantánea Inteligente & Bilingüe**:
+   - Búsqueda en tiempo real sin pausas ni lentitud.
+   - Insensible a mayúsculas, minúsculas y tildes/acentos.
+   - Soporte para términos en español y portugués (ej: buscar *"oso"* o *"urso"*, *"corazón"* o *"coração"*, *"león"*, *"ajuar"*, etc.).
+   - Botones con sugerencias rápidas (Ositos, Safari, Bebé y Ajuar, Jardín, Alfabetos, Dinosaurios, Princesas).
 
-4. **Filtros e Ordenação Avançada**:
+4. **Filtros Avanzados y Ordenamiento**:
    - **Filtro por Bastidor**: 10×10 cm, 13×18 cm, 14×14 cm, 16×26 cm, 20×30 cm.
-   - **Filtro por Pontos**: Leve (< 10k), Médio (10k a 25k), Denso (> 25k).
-   - **Filtro por Cores**: 1 cor (monocromático), 2 a 4 cores, 5+ cores.
-   - **Ordenação**: Nome (A-Z ou Z-A), Menos pontos, Mais pontos, Menor tamanho, Maior tamanho.
-   - **Alternador de Grade**: Grade Normal (confortável) ou Grade Compacta (alta densidade).
+   - **Filtro por Puntadas**: Ligero (< 10k pts), Medio (10k a 25k pts), Denso (> 25k pts).
+   - **Filtro por Colores**: 1 color (monocromático), 2 a 4 colores, 5 o más colores.
+   - **Ordenamiento**: Nombre (A-Z o Z-A), Menos puntadas primero, Más puntadas primero, Menor tamaño, Mayor tamaño.
+   - **Modo de Vista**: Vista Normal Confortable o Vista Compacta Rápida.
 
-5. **Ficha Técnica Detalhada no Modal**:
-   - Pré-visualização ampla da matriz.
-   - Dimensões reais em centímetros e milímetros.
-   - Sugestão do bastidor ideal.
-   - Total de pontos e tempo estimado de bordado (a 650 pontos/min).
-   - Botões de download em todos os formatos com destaque para a máquina do usuário.
-   - Botão para compartilhar link direto da matriz (`#mat=ID`).
+5. **Ficha Técnica Detallada en el Modal**:
+   - Vista previa amplia de la matriz.
+   - Dimensiones reales en centímetros y milímetros.
+   - Sugerencia del bastidor ideal recomendado.
+   - Total de puntadas y tiempo estimado de bordado (a 650 puntadas/min).
+   - Botones de descarga en los 5 formatos con indicación de la máquina de la usuaria.
+   - Botón para compartir enlace directo (`#mat=ID`).
 
-6. **Seletor de Máquina Inteligente**:
-   - Salva a preferência da artesã no navegador (`localStorage`).
-   - Todos os botões do site se adaptam automaticamente para baixar na extensão escolhida.
+6. **Selector de Máquina Inteligente**:
+   - Guarda la máquina preferida en el navegador (`localStorage`).
+   - Todos los botones del sitio se adaptan automáticamente para descargar en la extensión correcta.
 
 7. **Sistema de Favoritos**:
-   - Salve suas matrizes favoritas com 1 clique no coraçãozinho (♥).
-   - Aba exclusiva com todas as matrizes favoritadas para acesso rápido antes de bordar.
+   - Guarda tus matrices favoritas con un clic en el corazón (♥).
+   - Pestaña exclusiva con todos los diseños guardados en tu dispositivo para acceso rápido.
 
-8. **Guia Passo a Passo "Como Bordar"**:
-   - Tutorial ilustrado em 5 passos para levar a matriz até a máquina.
-   - Dicas profissionais sobre tensão de linha, entretela e escolha de agulhas.
+8. **Guía Paso a Paso "Cómo Bordar"**:
+   - Tutorial en 5 pasos para transferir y bordar cualquier diseño desde la memoria USB.
+   - Consejos profesionales sobre estabilizadores / entretelas, agujas y tensión de hilos.
 
-9. **Sons Fofos (Web Audio API)**:
-   - Efeitos sonoros suaves estilo carrilhão/marimba ao favoritar e clicar.
-   - Botão para ligar/desligar o som a qualquer momento.
+9. **Sonidos Tiernos (Web Audio API)**:
+   - Efectos sonoros suaves sintetizados al guardar favoritos o interactuar.
+   - Botón para activar o silenciar los sonidos en cualquier momento.
+
+10. **Diseño Móvil con Barra Inferior**:
+    - Navegación optimizada para teléfonos celulares con barra inferior rápida (Inicio, Categorías, Colecciones, Favoritos, Menú).
 
 ---
 
-## 🚀 Como Abrir e Usar
+## 🚀 Cómo Abrir y Usar
 
-Basta abrir o arquivo **`index.html`** em qualquer navegador moderno (Chrome, Edge, Safari, Firefox) no computador, celular ou tablet.
+Simplemente abre el archivo **`index.html`** en cualquier navegador moderno (Chrome, Edge, Safari, Firefox).
 
-Se preferir rodar em um servidor local:
+Para correr en un servidor local:
 ```bash
-# Com Node.js
-npx serve .
-
-# Ou com Python
-python -m http.server 3000
+# Con Node.js
+node server.js
+# Abre: http://localhost:3000
 ```
 
 ---
 
-## ⚙️ Estrutura dos Arquivos
+## ⚙️ Estructura del Proyecto
 
-- **`index.html`**: Estrutura semântica da área de membros com menu, barra de busca, modais e containers.
-- **`styles.css`**: Design completo, responsivo, minimalista e aconchegante com variáveis CSS e animações suaves.
-- **`app.js`**: Lógica da aplicação (catálogo, filtros, paginação em lotes de alto desempenho, modais e downloads).
-- **`catalogo.js`**: Base de dados completa com as 3.764 matrizes, 12 categorias e 30 coleções.
-
-### 🌐 Configuração de Servidor Próprio (Opcional)
-Por padrão, o arquivo `app.js` aponta os downloads e capas para `https://area-do-aluno.shop`:
-```javascript
-const CONFIG = {
-  BASE_URL: 'https://area-do-aluno.shop',
-  // ...
-};
-```
-Caso você venha a hospedar todos os arquivos `.zip`, `.pes`, `.jef` e imagens no seu próprio domínio ou hospedagem (ex: Hostinger, AWS S3, etc.), basta alterar `CONFIG.BASE_URL` para o endereço da sua hospedagem.
+- **`index.html`**: Estructura en español con navegación, modales y barra móvil.
+- **`styles.css`**: Hoja de estilos con diseño minimalista pastel, sin desfoques.
+- **`app.js`**: Controlador en español LATAM con búsqueda inteligente, filtros, favoritos y descargas.
+- **`catalogo.js`**: Base de datos completa con las 3.764 matrices, 12 categorías y 30 colecciones.
+- **`server.js`**: Servidor local ligero para pruebas.

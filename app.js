@@ -1,32 +1,32 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * BORDADO PERFEITO · ÁREA DE MEMBROS INFANTIL & ACONCHEGANTE
- * Script principal: catálogo, busca inteligente, filtros, modais
- * e integração completa de downloads.
+ * BORDADO PERFECTO · ÁREA DE MIEMBROS INFANTIL & ACOGEDORA
+ * Versión en Español LATAM completa y adaptada.
+ * Catálogo, búsqueda inteligente, filtros, modales y descargas.
  * ═══════════════════════════════════════════════════════════════
  */
 
-// ══ CONFIGURAÇÕES GERAIS ══
+// ══ CONFIGURACIONES GENERALES ══
 const CONFIG = {
-  // Base URL onde os arquivos, zips e capas reais estão hospedados
+  // Base URL donde están alojados los archivos, zips y portadas reales
   BASE_URL: 'https://area-do-aluno.shop',
   ARQ_DIR: 'arquivos/arquivos',
   CAPAS_DIR: 'capas/capas',
   ZIPS_DIR: 'zips-colecoes/zips',
   ZIPS_TUDO_DIR: 'zips-completos/zips',
-  BATCH_SIZE: 48 // Quantidade de matrizes renderizadas por lote
+  BATCH_SIZE: 48 // Cantidad de matrices renderizadas por lote
 };
 
-// ══ BANCO DE DADOS DE MÁQUINAS E COMPATIBILIDADE ══
+// ══ BASE DE DATOS DE MÁQUINAS Y COMPATIBILIDAD ══
 const MAQUINAS = [
   { s: 'PES', marca: 'Brother', modelos: 'Brother, Baby Lock, Bernina Deco', ext: '.pes', icone: '🧵' },
   { s: 'JEF', marca: 'Janome', modelos: 'Janome, Elna, Kenmore', ext: '.jef', icone: '🪡' },
-  { s: 'DST', marca: 'Tajima / Industrial', modelos: 'Tajima, Barudan, Industriais, SWF', ext: '.dst', icone: '🏭' },
+  { s: 'DST', marca: 'Tajima / Industrial', modelos: 'Tajima, Barudan, Industriales, SWF', ext: '.dst', icone: '🏭' },
   { s: 'EXP', marca: 'Bernina / Melco', modelos: 'Melco, Bernina', ext: '.exp', icone: '✨' },
   { s: 'XXX', marca: 'Singer', modelos: 'Singer, Compucon', ext: '.xxx', icone: '🪢' }
 ];
 
-// Ícones e cores para cada categoria
+// Íconos y colores para cada categoría
 const CATEGORIA_ICONES = {
   'ursinhos': { icone: '🧸', cor: '#FFE8D6' },
   'safari-e-animais': { icone: '🦁', cor: '#E7F7EF' },
@@ -42,7 +42,57 @@ const CATEGORIA_ICONES = {
   'nomes-prontos': { icone: '🏷️', cor: '#FEF5E5' }
 };
 
-// ══ GERENCIADOR DE ESTADO LOCAL ══
+// Diccionario de Categorías en Español LATAM
+const CAT_ESPANOL = {
+  'ursinhos': 'Ositos',
+  'safari-e-animais': 'Safari y Animales',
+  'bebe-e-enxoval': 'Bebé y Ajuar',
+  'infantil': 'Infantil y Juguetes',
+  'fazendinha': 'Granjita',
+  'jardim-e-flores': 'Jardín y Flores',
+  'princesas-e-fadas': 'Princesas y Hadas',
+  'fundo-do-mar': 'Fondo del Mar',
+  'dinossauros': 'Dinosaurios',
+  'natal-e-datas-especiais': 'Navidad y Fechas Especiales',
+  'alfabetos': 'Alfabetos y Letras',
+  'nomes-prontos': 'Nombres Listos'
+};
+
+// Diccionario de Colecciones en Español LATAM
+const COL_ESPANOL = {
+  'ursinhos-ursinhos': 'Ositos Tiernos',
+  'safari-e-animais-safari-e-animais': 'Safari y Animales',
+  'bebe-e-enxoval-bebe-e-enxoval': 'Bebé y Ajuar',
+  'fazendinha-fazendinha': 'Granjita Encantada',
+  'fundo-do-mar-fundo-do-mar': 'Fondo del Mar',
+  'dinossauros-dinossauros': 'Dinosaurios Infantiles',
+  'infantil-transporte': 'Transporte y Vehículos',
+  'infantil-brinquedos': 'Juguetes y Juegos',
+  'infantil-doces': 'Dulces y Golosinas',
+  'infantil-escola': 'Escuela y Colegio',
+  'infantil-frutas': 'Frutitas',
+  'infantil-roupinhas': 'Ropita y Baberos',
+  'princesas-e-fadas-princesas-e-fadas': 'Princesas y Hadas',
+  'jardim-e-flores-jardim-e-flores': 'Jardín y Flores',
+  'natal-e-datas-especiais-natal': 'Navidad',
+  'natal-e-datas-especiais-pascoa': 'Pascua',
+  'natal-e-datas-especiais-datas-especiais': 'Fechas Especiales',
+  'alfabetos-alfabeto-alegre': 'Alfabeto Alegre',
+  'alfabetos-alfabeto-caligrafia': 'Alfabeto Caligrafía',
+  'alfabetos-alfabeto-classico': 'Alfabeto Clásico',
+  'alfabetos-alfabeto-delicado': 'Alfabeto Delicado',
+  'alfabetos-alfabeto-elegante': 'Alfabeto Elegante',
+  'alfabetos-alfabeto-fino': 'Alfabeto Fino',
+  'alfabetos-alfabeto-infantil': 'Alfabeto Infantil',
+  'alfabetos-alfabeto-manuscrito': 'Alfabeto Manuscrito',
+  'alfabetos-alfabeto-redondo': 'Alfabeto Redondo',
+  'alfabetos-alfabeto-romano': 'Alfabeto Romano',
+  'alfabetos-alfabeto-romantico': 'Alfabeto Romántico',
+  'nomes-prontos-nomes-femininos': 'Nombres Femeninos',
+  'nomes-prontos-nomes-masculinos': 'Nombres Masculinos'
+};
+
+// ══ ADMINISTRADOR DE ESTADO LOCAL ══
 const Storage = {
   get: (key, fallback) => {
     try {
@@ -59,7 +109,7 @@ const Storage = {
   }
 };
 
-// ══ SÍNTESE DE SOM COZY (WEB AUDIO API) ══
+// ══ SÍNTESIS DE SONIDO ACOGEDOR (WEB AUDIO API) ══
 class CozySound {
   constructor() {
     this.ctx = null;
@@ -109,20 +159,20 @@ class CozySound {
 }
 const sound = new CozySound();
 
-// ══ APLICAÇÃO PRINCIPAL ══
+// ══ APLICACIÓN PRINCIPAL ══
 document.addEventListener('DOMContentLoaded', () => {
   const ACERVO = window.ACERVO;
   if (!ACERVO) {
     document.getElementById('view').innerHTML = `
       <div class="empty-state-box">
         <span class="empty-icon">⚠️</span>
-        <h3 class="empty-title">Catálogo não carregado</h3>
-        <p class="empty-desc">Verifique se o arquivo catalogo.js está presente na mesma pasta.</p>
+        <h3 class="empty-title">El catálogo no se cargó correctamente</h3>
+        <p class="empty-desc">Por favor verifica que el archivo catalogo.js esté presente en la misma carpeta.</p>
       </div>`;
     return;
   }
 
-  // Estado da Aplicação
+  // Estado de la Aplicación
   let userFormat = Storage.get('machine_fmt', null);
   let favorites = Storage.get('favorites', []);
   let currentRoute = { view: 'home', param: null, subcol: null };
@@ -141,14 +191,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const colNomeMap = {}, colCatMap = {};
   for (const k in COLS) {
-    colNomeMap[k] = COLS[k].nome;
+    colNomeMap[k] = COL_ESPANOL[k] || COLS[k].nome;
     colCatMap[k] = COLS[k].cat;
   }
 
   const catNomeMap = {};
-  CATS.forEach(c => { catNomeMap[c.id] = c.nome; });
+  CATS.forEach(c => { catNomeMap[c.id] = CAT_ESPANOL[c.id] || c.nome; });
 
-  // Normalização de texto para busca
+  // Normalización de texto para búsqueda sin acentos
   const normalize = (str) => {
     return (str || '')
       .normalize('NFD')
@@ -156,13 +206,42 @@ document.addEventListener('DOMContentLoaded', () => {
       .toLowerCase();
   };
 
-  // Pré-computa strings de busca
+  // Sinónimos bilingües para búsqueda intuitiva (encuentra por términos en español y portugués)
+  const getSearchSynonyms = (text) => {
+    const t = normalize(text);
+    let extra = '';
+    if (t.includes('urso') || t.includes('ursinho')) extra += ' oso osito osita ';
+    if (t.includes('coracao')) extra += ' corazon corazoncito ';
+    if (t.includes('leao')) extra += ' leon leoncito ';
+    if (t.includes('girafa')) extra += ' jirafa ';
+    if (t.includes('bebe') || t.includes('enxoval')) extra += ' bebe nene ajuar cuna ';
+    if (t.includes('fazenda') || t.includes('fazendinha')) extra += ' granja granjita vaca cerdito ';
+    if (t.includes('jardim') || t.includes('flor')) extra += ' jardin flores floral florcita ';
+    if (t.includes('fada')) extra += ' hada hadas magica ';
+    if (t.includes('princesa')) extra += ' princesa corona tiara ';
+    if (t.includes('mar') || t.includes('peixe')) extra += ' pez peces mar oceano ballena ';
+    if (t.includes('dino')) extra += ' dinosaurio dinosaurios ';
+    if (t.includes('natal')) extra += ' navidad claus pino ';
+    if (t.includes('pascoa')) extra += ' pascua conejo conejito ';
+    if (t.includes('doce')) extra += ' dulce dulces golosina paleta ';
+    if (t.includes('fruta')) extra += ' fruta frutas frutita ';
+    if (t.includes('brinquedo')) extra += ' juguete juguetes ';
+    if (t.includes('escola')) extra += ' escuela colegio lapiz ';
+    if (t.includes('roupa') || t.includes('roupinha')) extra += ' ropa ropita babero ';
+    if (t.includes('transporte')) extra += ' transporte auto coche avion tren ';
+    return extra;
+  };
+
+  // Precalcula strings de búsqueda rápida
   const SEARCH_INDEX = MATRIZES.map(m => {
-    return normalize(m[1] + ' ' + (colNomeMap[m[2]] || '') + ' ' + (catNomeMap[colCatMap[m[2]]] || '') + ' ' + m[3]);
+    const cName = colNomeMap[m[2]] || '';
+    const catName = catNomeMap[colCatMap[m[2]]] || '';
+    const syn = getSearchSynonyms(m[1] + ' ' + cName + ' ' + catName);
+    return normalize(m[1] + ' ' + cName + ' ' + catName + ' ' + m[3] + ' ' + syn);
   });
 
-  // Utilitários de Formatação
-  const fmtNum = (n) => Number(n || 0).toLocaleString('pt-BR');
+  // Utilidades de Formato
+  const fmtNum = (n) => Number(n || 0).toLocaleString('es-LA');
   const fmtCm = (w, h) => `${(w / 10).toFixed(1).replace('.', ',')} × ${(h / 10).toFixed(1).replace('.', ',')} cm`;
   
   // URL Resolvers
@@ -198,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return 'Grande';
   };
 
-  // Tempo estimado de bordado (base 650 ppm + 1.5 min por troca de cor)
+  // Tiempo estimado de bordado (base 650 ppm + 1.5 min por cambio de color)
   const getEstimatedTime = (pontos, cores) => {
     const minutos = Math.ceil((pontos / 650) + (cores * 1.5));
     if (minutos < 60) return `${minutos} min`;
@@ -207,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${h}h ${m}m`;
   };
 
-  // Elementos do DOM
+  // Elementos del DOM
   const viewEl = document.getElementById('view');
   const sidebarEl = document.getElementById('sidebar');
   const backdropEl = document.getElementById('drawerBackdrop');
@@ -219,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalMachineEl = document.getElementById('modalMachine');
   const modalMachineWindowEl = document.getElementById('modalMachineWindow');
 
-  // Atualiza indicadores de máquina
+  // Actualiza indicadores de máquina
   const updateMachineDisplay = () => {
     const fmt = userFormat || 'PES';
     document.querySelectorAll('.js-active-format').forEach(el => {
@@ -227,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Atualiza contador de favoritos
+  // Actualiza contador de favoritos
   const updateFavCount = () => {
     const count = favorites.length;
     document.querySelectorAll('.js-fav-count').forEach(el => {
@@ -256,12 +335,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2800);
   };
 
-  // Navegação entre rotas
+  // Navegación entre vistas
   const navigate = (view, param = null, subcol = null) => {
     currentRoute = { view, param, subcol };
     closeDrawer();
 
-    // Atualiza menu ativo no menu lateral e na barra inferior mobile
+    // Actualiza menú activo en la barra lateral y en la barra inferior móvil
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.view === view);
     });
@@ -272,14 +351,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderView();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Atualiza hash da URL sem recarregar a página
+    // Actualiza hash de la URL
     let hash = `#${view}`;
     if (param) hash += `/${param}`;
     if (subcol) hash += `/${subcol}`;
     history.replaceState(null, '', hash);
   };
 
-  // Mobile Drawer (Gaveta)
+  // Gaveta Móvil (Drawer)
   const openDrawer = () => {
     sidebarEl.classList.add('active');
     backdropEl.classList.add('active');
@@ -312,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   backdropEl?.addEventListener('click', closeDrawer);
 
-  // Busca com debounce
+  // Búsqueda con debounce
   let searchTimeout;
   searchInputEl?.addEventListener('input', () => {
     clearTimeout(searchTimeout);
@@ -340,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (q) navigate('search', q);
   });
 
-  // Chips de pesquisa rápida
+  // Chips de búsqueda rápida
   document.querySelectorAll('.js-quick-search').forEach(tag => {
     tag.addEventListener('click', () => {
       const q = tag.dataset.query;
@@ -350,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Renderizador de Card de Matriz
+  // Renderizador de Tarjeta de Matriz
   const renderMatrixCard = (m) => {
     const isFav = favorites.includes(m[0]);
     const hoop = getSuggestedHoop(m[4], m[5]);
@@ -362,8 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="matrix-card" data-matrix-id="${m[0]}">
         <div class="matrix-thumb-box js-open-matrix" data-matrix-id="${m[0]}">
           <img class="matrix-img" src="${capaUrl}" alt="${m[1]}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23FDE8EF%22/><text x=%2250%22 y=%2255%22 font-size=%2230%22 text-anchor=%22middle%22>🧵</text></svg>'">
-          <span class="hoop-badge">${hoop}</span>
-          <button class="btn-fav ${isFav ? 'active' : ''} js-toggle-fav" data-fav-id="${m[0]}" aria-label="Favoritar matriz" title="Favoritar matriz">
+          <span class="hoop-badge">Bastidor ${hoop}</span>
+          <button class="btn-fav ${isFav ? 'active' : ''} js-toggle-fav" data-fav-id="${m[0]}" aria-label="Guardar en favoritos" title="Guardar en favoritos">
             ♥
           </button>
         </div>
@@ -371,11 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
           <h4 class="matrix-title js-open-matrix" data-matrix-id="${m[0]}" title="${m[1]}">${m[1]}</h4>
           <div class="matrix-meta-specs">
             <span class="matrix-size">${m[3]}</span>
-            <span class="matrix-points">${(m[6] / 1000).toFixed(1)}k pts • ${m[7]}c</span>
+            <span class="matrix-points">${(m[6] / 1000).toFixed(1)}k pts • ${m[7]} col</span>
           </div>
           <div class="matrix-actions-row">
-            <a class="btn-card-download" href="${downloadUrl}" download title="Baixar em ${currentFmt}">
-              <span>⬇</span> Baixar ${currentFmt}
+            <a class="btn-card-download" href="${downloadUrl}" download title="Descargar en ${currentFmt}">
+              <span>⬇</span> Descargar ${currentFmt}
             </a>
             <button class="btn-card-quickview js-open-matrix" data-matrix-id="${m[0]}" title="Ficha completa">
               👁️
@@ -386,7 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   };
 
-  // Renderizador em Lote (Infinite Chunk Grid)
+  // Renderizador en Lote (Infinite Chunk Grid)
   let renderNextBatch = null;
   const renderBatchGrid = (list, targetContainer) => {
     let index = 0;
@@ -406,16 +485,16 @@ document.addEventListener('DOMContentLoaded', () => {
         renderNextBatch = appendChunk;
         if (loadMoreBtn) {
           loadMoreBtn.style.display = 'inline-flex';
-          loadMoreBtn.innerHTML = `Carregar mais matrizes (${fmtNum(list.length - index)} restantes)`;
+          loadMoreBtn.innerHTML = `Cargar más matrices (${fmtNum(list.length - index)} restantes)`;
         }
         if (counterEl) {
-          counterEl.textContent = `Mostrando ${fmtNum(index)} de ${fmtNum(list.length)} matrizes`;
+          counterEl.textContent = `Mostrando ${fmtNum(index)} de ${fmtNum(list.length)} matrices`;
         }
       } else {
         renderNextBatch = null;
         if (loadMoreBtn) loadMoreBtn.style.display = 'none';
         if (counterEl) {
-          counterEl.textContent = `Todas as ${fmtNum(list.length)} matrizes carregadas com carinho! ✨`;
+          counterEl.textContent = `¡Todas las ${fmtNum(list.length)} matrices cargadas con cariño! ✨`;
         }
       }
     };
@@ -423,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
     appendChunk();
   };
 
-  // Aplicação de Filtros e Ordenação
+  // Filtros y Ordenamiento
   const applyFiltersAndSorting = (items) => {
     let filtered = [...items];
 
@@ -435,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Filtro por Pontos
+    // Filtro por Puntadas
     if (currentFilters.stitches !== 'all') {
       filtered = filtered.filter(m => {
         const pts = m[6];
@@ -446,7 +525,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Filtro por Cores
+    // Filtro por Colores
     if (currentFilters.colors !== 'all') {
       filtered = filtered.filter(m => {
         const c = m[7];
@@ -457,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Ordenação
+    // Ordenamiento
     if (currentFilters.sort === 'name-asc') {
       filtered.sort((a, b) => a[1].localeCompare(b[1]));
     } else if (currentFilters.sort === 'name-desc') {
@@ -475,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return filtered;
   };
 
-  // Barra de Ferramentas de Filtros
+  // Barra de Herramientas de Filtros en Español
   const renderFiltersToolbar = () => {
     return `
       <div class="filters-toolbar">
@@ -483,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="filter-select-group">
             <span class="filter-label">Bastidor:</span>
             <select class="custom-select js-filter-hoop">
-              <option value="all" ${currentFilters.hoop === 'all' ? 'selected' : ''}>Todos os Bastidores</option>
+              <option value="all" ${currentFilters.hoop === 'all' ? 'selected' : ''}>Todos los Bastidores</option>
               <option value="10×10" ${currentFilters.hoop === '10×10' ? 'selected' : ''}>Bastidor 10×10 cm</option>
               <option value="13×18" ${currentFilters.hoop === '13×18' ? 'selected' : ''}>Bastidor 13×18 cm</option>
               <option value="14×14" ${currentFilters.hoop === '14×14' ? 'selected' : ''}>Bastidor 14×14 cm</option>
@@ -493,22 +572,22 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="filter-select-group">
-            <span class="filter-label">Pontos:</span>
+            <span class="filter-label">Puntadas:</span>
             <select class="custom-select js-filter-stitches">
-              <option value="all" ${currentFilters.stitches === 'all' ? 'selected' : ''}>Todos os Pontos</option>
-              <option value="light" ${currentFilters.stitches === 'light' ? 'selected' : ''}>Leve (&lt; 10k pts)</option>
-              <option value="medium" ${currentFilters.stitches === 'medium' ? 'selected' : ''}>Médio (10k - 25k pts)</option>
+              <option value="all" ${currentFilters.stitches === 'all' ? 'selected' : ''}>Todas las Puntadas</option>
+              <option value="light" ${currentFilters.stitches === 'light' ? 'selected' : ''}>Ligero (&lt; 10k pts)</option>
+              <option value="medium" ${currentFilters.stitches === 'medium' ? 'selected' : ''}>Medio (10k - 25k pts)</option>
               <option value="dense" ${currentFilters.stitches === 'dense' ? 'selected' : ''}>Denso (&gt; 25k pts)</option>
             </select>
           </div>
 
           <div class="filter-select-group">
-            <span class="filter-label">Cores:</span>
+            <span class="filter-label">Colores:</span>
             <select class="custom-select js-filter-colors">
-              <option value="all" ${currentFilters.colors === 'all' ? 'selected' : ''}>Todas as Cores</option>
-              <option value="1" ${currentFilters.colors === '1' ? 'selected' : ''}>1 Cor (Monocromático)</option>
-              <option value="2-4" ${currentFilters.colors === '2-4' ? 'selected' : ''}>2 a 4 Cores</option>
-              <option value="5+" ${currentFilters.colors === '5+' ? 'selected' : ''}>5 ou mais Cores</option>
+              <option value="all" ${currentFilters.colors === 'all' ? 'selected' : ''}>Todos los Colores</option>
+              <option value="1" ${currentFilters.colors === '1' ? 'selected' : ''}>1 Color (Monocromático)</option>
+              <option value="2-4" ${currentFilters.colors === '2-4' ? 'selected' : ''}>2 a 4 Colores</option>
+              <option value="5+" ${currentFilters.colors === '5+' ? 'selected' : ''}>5 o más Colores</option>
             </select>
           </div>
         </div>
@@ -517,21 +596,21 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="filter-select-group">
             <span class="filter-label">Ordenar:</span>
             <select class="custom-select js-filter-sort">
-              <option value="default" ${currentFilters.sort === 'default' ? 'selected' : ''}>Ordem do Acervo</option>
-              <option value="name-asc" ${currentFilters.sort === 'name-asc' ? 'selected' : ''}>Nome (A → Z)</option>
-              <option value="name-desc" ${currentFilters.sort === 'name-desc' ? 'selected' : ''}>Nome (Z → A)</option>
-              <option value="points-asc" ${currentFilters.sort === 'points-asc' ? 'selected' : ''}>Menos Pontos Primeiro</option>
-              <option value="points-desc" ${currentFilters.sort === 'points-desc' ? 'selected' : ''}>Mais Pontos Primeiro</option>
-              <option value="size-asc" ${currentFilters.sort === 'size-asc' ? 'selected' : ''}>Menor Tamanho</option>
-              <option value="size-desc" ${currentFilters.sort === 'size-desc' ? 'selected' : ''}>Maior Tamanho</option>
+              <option value="default" ${currentFilters.sort === 'default' ? 'selected' : ''}>Orden del Catálogo</option>
+              <option value="name-asc" ${currentFilters.sort === 'name-asc' ? 'selected' : ''}>Nombre (A → Z)</option>
+              <option value="name-desc" ${currentFilters.sort === 'name-desc' ? 'selected' : ''}>Nombre (Z → A)</option>
+              <option value="points-asc" ${currentFilters.sort === 'points-asc' ? 'selected' : ''}>Menos Puntadas Primero</option>
+              <option value="points-desc" ${currentFilters.sort === 'points-desc' ? 'selected' : ''}>Más Puntadas Primero</option>
+              <option value="size-asc" ${currentFilters.sort === 'size-asc' ? 'selected' : ''}>Menor Tamaño</option>
+              <option value="size-desc" ${currentFilters.sort === 'size-desc' ? 'selected' : ''}>Mayor Tamaño</option>
             </select>
           </div>
 
           <div class="view-mode-toggle">
-            <button class="vmt-btn ${currentFilters.viewMode === 'comfortable' ? 'active' : ''} js-view-mode" data-mode="comfortable" title="Grade confortável">
+            <button class="vmt-btn ${currentFilters.viewMode === 'comfortable' ? 'active' : ''} js-view-mode" data-mode="comfortable" title="Vista normal confortable">
               ▦ Normal
             </button>
-            <button class="vmt-btn ${currentFilters.viewMode === 'compact' ? 'active' : ''} js-view-mode" data-mode="compact" title="Grade compacta">
+            <button class="vmt-btn ${currentFilters.viewMode === 'compact' ? 'active' : ''} js-view-mode" data-mode="compact" title="Vista compacta rápida">
               ▤ Compacto
             </button>
           </div>
@@ -540,52 +619,52 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   };
 
-  // ══ RENDERIZADOR PRINCIPAL DE VISUALIZAÇÕES ══
+  // ══ RENDERIZADOR PRINCIPAL DE VISTAS ══
   const renderView = () => {
     const { view, param, subcol } = currentRoute;
     const currentFmt = userFormat || 'PES';
     let html = '';
 
-    // ── VISTA: HOME / INÍCIO ──
+    // ── VISTA: INICIO / HOME ──
     if (view === 'home') {
       html += `
-        <!-- Hero Banner Acolhedor -->
+        <!-- Hero Banner Acogedor -->
         <section class="hero-banner">
           <div class="hero-content">
             <div class="hero-badge-pill">
-              <span>🧸✨</span> Cantinho do Bordado Infantil
+              <span>🧸✨</span> Rincón del Bordado Infantil
             </div>
-            <h1 class="hero-title">Bem-vinda ao seu Ateliê Encantado de <em>Bordados</em></h1>
-            <p class="hero-desc">Sua biblioteca definitiva com <b>${fmtNum(ACERVO.total)} matrizes infantis</b> prontas para a sua máquina de bordar, organizadas por temas fofos e coleções exclusivas.</p>
+            <h1 class="hero-title">Bienvenida a tu Taller Encantado de <em>Bordados</em></h1>
+            <p class="hero-desc">Tu biblioteca definitiva con <b>${fmtNum(ACERVO.total)} matrices infantiles</b> listas para tu máquina bordadora, organizadas por temas tiernos y colecciones exclusivas.</p>
           </div>
         </section>
 
-        <!-- Faixa de Máquina Selecionada com Troca Fácil -->
+        <!-- Barra de Máquina Seleccionada con Cambio Fácil -->
         <div class="format-notice-bar">
           <div class="fnb-text">
-            <span>🪡 Sua máquina está configurada para:</span>
+            <span>🪡 Tu máquina está configurada para:</span>
             <b>Formato ${currentFmt}</b>
-            <span style="opacity:0.75">(Todos os botões baixam automaticamente nesta extensão)</span>
+            <span style="opacity:0.75">(Todos los botones descargan automáticamente en este formato)</span>
           </div>
           <button class="btn-change-format js-open-machine-modal">
-            Trocar Máquina / Formato
+            Cambiar Máquina / Formato
           </button>
         </div>
 
-        <!-- Grade de Estatísticas Acolhedoras -->
+        <!-- Tarjetas de Estadísticas Acogedoras -->
         <div class="stats-grid">
           <div class="stat-card c1">
             <div class="stat-icon">🧸</div>
             <div class="stat-info">
               <span class="stat-number">${fmtNum(ACERVO.total)}</span>
-              <span class="stat-title">Matrizes Infantis</span>
+              <span class="stat-title">Matrices Infantiles</span>
             </div>
           </div>
           <div class="stat-card c2">
             <div class="stat-icon">📁</div>
             <div class="stat-info">
               <span class="stat-number">${Object.keys(COLS).length}</span>
-              <span class="stat-title">Coleções Prontas</span>
+              <span class="stat-title">Colecciones Listas</span>
             </div>
           </div>
           <div class="stat-card c3">
@@ -598,17 +677,17 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="stat-card c4">
             <div class="stat-icon">👑</div>
             <div class="stat-info">
-              <span class="stat-number">Acesso Vitalício</span>
-              <span class="stat-title">Sem mensalidade</span>
+              <span class="stat-number">Acceso Vitalicio</span>
+              <span class="stat-title">Sin mensualidades</span>
             </div>
           </div>
         </div>
 
-        <!-- Seção: Categorias em Destaque -->
+        <!-- Sección: Categorías Encantadas -->
         <div class="section-header">
           <div class="section-title-box">
             <span class="section-icon">🎀</span>
-            <h2 class="section-title">Categorias Encantadas</h2>
+            <h2 class="section-title">Categorías Encantadas</h2>
           </div>
           <button class="btn-view-all js-nav" data-view="categories">
             Ver todas (${CATS.length}) &rarr;
@@ -617,83 +696,86 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="categories-grid">
           ${CATS.map(c => {
             const meta = CATEGORIA_ICONES[c.id] || { icone: '🌸' };
+            const nombreEsp = CAT_ESPANOL[c.id] || c.nome;
             return `
               <div class="category-card js-nav" data-view="category" data-param="${c.id}">
                 <div class="category-img-wrapper">
-                  <img class="category-img" src="${getCapaUrl(c.capa)}" alt="${c.nome}" loading="lazy">
+                  <img class="category-img" src="${getCapaUrl(c.capa)}" alt="${nombreEsp}" loading="lazy">
                 </div>
-                <span class="category-name">${meta.icone} ${c.nome}</span>
-                <span class="category-count">${fmtNum(c.n)} matrizes</span>
+                <span class="category-name">${meta.icone} ${nombreEsp}</span>
+                <span class="category-count">${fmtNum(c.n)} matrices</span>
               </div>
             `;
           }).join('')}
         </div>
 
-        <!-- Seção: Coleções em Destaque -->
+        <!-- Sección: Colecciones Destacadas -->
         <div class="section-header" style="margin-top: 10px;">
           <div class="section-title-box">
             <span class="section-icon">✨</span>
-            <h2 class="section-title">Coleções Mais Amadas</h2>
+            <h2 class="section-title">Colecciones Más Queridas</h2>
           </div>
           <button class="btn-view-all js-nav" data-view="collections">
-            Ver todas as coleções &rarr;
+            Ver todas las colecciones &rarr;
           </button>
         </div>
         <div class="collections-grid">
           ${Object.keys(COLS).slice(0, 12).map(key => {
             const col = COLS[key];
+            const nombreColEsp = COL_ESPANOL[col.id] || col.nome;
             return `
               <div class="collection-card js-nav" data-view="collection" data-param="${col.id}">
                 <div class="collection-img-box">
-                  <img class="collection-img" src="${getCapaUrl(col.capa)}" alt="${col.nome}" loading="lazy">
+                  <img class="collection-img" src="${getCapaUrl(col.capa)}" alt="${nombreColEsp}" loading="lazy">
                 </div>
                 <div class="collection-meta">
-                  <h4 class="collection-name">${col.nome}</h4>
-                  <span class="collection-count">${fmtNum(col.n)} matrizes</span>
+                  <h4 class="collection-name">${nombreColEsp}</h4>
+                  <span class="collection-count">${fmtNum(col.n)} matrices</span>
                 </div>
               </div>
             `;
           }).join('')}
         </div>
 
-        <!-- Banner Especial: Baixar Acervo Completo de uma vez -->
+        <!-- Banner Especial: Descargar Catálogo Completo de una Sola Vez -->
         <div class="download-pack-banner" style="margin-top: 20px;">
           <div class="dpb-info">
-            <span class="dpb-tag">⭐ PACOTE COMPLETO VITALÍCIO</span>
-            <h3 class="dpb-title">Baixar Todas as ${fmtNum(ACERVO.total)} Matrizes de uma só vez</h3>
-            <p class="dpb-subtitle">Economize tempo! O arquivo ZIP completo em <b>${currentFmt}</b> contém todas as 12 categorias e 30 coleções organizadas em pastas. ${getZipWeight(`acervo-completo-${currentFmt.toLowerCase()}`) ? `Tamanho: ${getZipWeight(`acervo-completo-${currentFmt.toLowerCase()}`)}.` : ''} (Recomendado baixar conectado ao Wi-Fi).</p>
+            <span class="dpb-tag">⭐ PAQUETE COMPLETO VITALICIO</span>
+            <h3 class="dpb-title">Descargar las ${fmtNum(ACERVO.total)} Matrices de una Sola Vez</h3>
+            <p class="dpb-subtitle">¡Ahorra tiempo! El archivo ZIP completo en <b>${currentFmt}</b> contiene todas las 12 categorías y 30 colecciones organizadas en carpetas. ${getZipWeight(`acervo-completo-${currentFmt.toLowerCase()}`) ? `Tamaño: ${getZipWeight(`acervo-completo-${currentFmt.toLowerCase()}`)}.` : ''} (Recomendado descargar conectada a Wi-Fi).</p>
           </div>
           <div class="dpb-actions">
             <a class="btn-download-pack" href="${getAllZipUrl(currentFmt)}" download>
-              <span>⬇</span> Baixar Acervo Completo em ${currentFmt}
+              <span>⬇</span> Descargar Catálogo Completo en ${currentFmt}
             </a>
           </div>
         </div>
       `;
     }
 
-    // ── VISTA: TODAS AS CATEGORIAS ──
+    // ── VISTA: TODAS LAS CATEGORÍAS ──
     else if (view === 'categories') {
       html += `
         <div class="section-header">
           <div class="section-title-box">
             <span class="section-icon">🧸</span>
             <div>
-              <h2 class="section-title">Todas as Categorias Infantis</h2>
-              <p style="font-size:0.9rem;color:var(--text-muted);">${CATS.length} categorias temáticas com ${fmtNum(ACERVO.total)} matrizes</p>
+              <h2 class="section-title">Todas las Categorías Infantiles</h2>
+              <p style="font-size:0.9rem;color:var(--text-muted);">${CATS.length} categorías temáticas con ${fmtNum(ACERVO.total)} matrices</p>
             </div>
           </div>
         </div>
         <div class="categories-grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));">
           ${CATS.map(c => {
             const meta = CATEGORIA_ICONES[c.id] || { icone: '🌸' };
+            const nombreEsp = CAT_ESPANOL[c.id] || c.nome;
             return `
               <div class="category-card js-nav" data-view="category" data-param="${c.id}" style="padding:16px 12px 18px;">
                 <div class="category-img-wrapper" style="border-radius:var(--r-lg);">
-                  <img class="category-img" src="${getCapaUrl(c.capa)}" alt="${c.nome}" loading="lazy">
+                  <img class="category-img" src="${getCapaUrl(c.capa)}" alt="${nombreEsp}" loading="lazy">
                 </div>
-                <span class="category-name" style="font-size:1.05rem;">${meta.icone} ${c.nome}</span>
-                <span class="category-count">${fmtNum(c.n)} matrizes • ${c.cols.length} coleç${c.cols.length > 1 ? 'ões' : 'ão'}</span>
+                <span class="category-name" style="font-size:1.05rem;">${meta.icone} ${nombreEsp}</span>
+                <span class="category-count">${fmtNum(c.n)} matrices • ${c.cols.length} colecci${c.cols.length > 1 ? 'ones' : 'ón'}</span>
               </div>
             `;
           }).join('')}
@@ -701,7 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }
 
-    // ── VISTA: TODAS AS COLEÇÕES ──
+    // ── VISTA: TODAS LAS COLECCIONES ──
     else if (view === 'collections') {
       const allCols = Object.keys(COLS).map(k => COLS[k]).sort((a, b) => b.n - a.n);
       html += `
@@ -709,36 +791,40 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="section-title-box">
             <span class="section-icon">📁</span>
             <div>
-              <h2 class="section-title">Todas as Coleções</h2>
-              <p style="font-size:0.9rem;color:var(--text-muted);">${allCols.length} pastas temáticas prontas para baixar</p>
+              <h2 class="section-title">Todas las Colecciones</h2>
+              <p style="font-size:0.9rem;color:var(--text-muted);">${allCols.length} carpetas temáticas listas para descargar</p>
             </div>
           </div>
         </div>
         <div class="collections-grid">
-          ${allCols.map(col => `
-            <div class="collection-card js-nav" data-view="collection" data-param="${col.id}">
-              <div class="collection-img-box">
-                <img class="collection-img" src="${getCapaUrl(col.capa)}" alt="${col.nome}" loading="lazy">
+          ${allCols.map(col => {
+            const nombreColEsp = COL_ESPANOL[col.id] || col.nome;
+            return `
+              <div class="collection-card js-nav" data-view="collection" data-param="${col.id}">
+                <div class="collection-img-box">
+                  <img class="collection-img" src="${getCapaUrl(col.capa)}" alt="${nombreColEsp}" loading="lazy">
+                </div>
+                <div class="collection-meta">
+                  <h4 class="collection-name">${nombreColEsp}</h4>
+                  <span class="collection-count">${fmtNum(col.n)} matrices</span>
+                </div>
               </div>
-              <div class="collection-meta">
-                <h4 class="collection-name">${col.nome}</h4>
-                <span class="collection-count">${fmtNum(col.n)} matrizes</span>
-              </div>
-            </div>
-          `).join('')}
+            `;
+          }).join('')}
         </div>
       `;
     }
 
-    // ── VISTA: UMA CATEGORIA ESPECÍFICA ──
+    // ── VISTA: CATEGORÍA ESPECÍFICA ──
     else if (view === 'category') {
       const cat = CATS.find(c => c.id === param);
       if (!cat) { navigate('categories'); return; }
 
       const meta = CATEGORIA_ICONES[cat.id] || { icone: '🌸' };
+      const nombreCatEsp = CAT_ESPANOL[cat.id] || cat.nome;
       let items = MATRIZES.filter(m => colCatMap[m[2]] === cat.id);
 
-      // Se filtrou por subcoleção
+      // Si se filtró por subcolección
       if (subcol) {
         items = items.filter(m => m[2] === subcol);
       }
@@ -746,46 +832,47 @@ document.addEventListener('DOMContentLoaded', () => {
       html += `
         <div style="margin-bottom: 20px;">
           <button class="btn-view-all js-nav" data-view="categories" style="margin-bottom:14px;">
-            &larr; Voltar para Categorias
+            &larr; Volver a Categorías
           </button>
           <div class="section-header" style="margin-bottom: 10px;">
             <div class="section-title-box">
               <span class="section-icon" style="font-size:2rem;">${meta.icone}</span>
               <div>
-                <h2 class="section-title">${cat.nome}</h2>
-                <p style="font-size:0.92rem;color:var(--text-muted);">${fmtNum(cat.n)} matrizes em ${cat.cols.length} coleç${cat.cols.length > 1 ? 'ões' : 'ão'}</p>
+                <h2 class="section-title">${nombreCatEsp}</h2>
+                <p style="font-size:0.92rem;color:var(--text-muted);">${fmtNum(cat.n)} matrices en ${cat.cols.length} colecci${cat.cols.length > 1 ? 'ones' : 'ón'}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Chips de Subcoleções -->
+        <!-- Chips de Subcolecciones -->
         <div class="subcollection-chips">
           <button class="subchip ${!subcol ? 'active' : ''} js-nav" data-view="category" data-param="${cat.id}">
-            Todas as ${fmtNum(cat.n)} matrizes
+            Todas las ${fmtNum(cat.n)} matrices
           </button>
           ${cat.cols.map(cId => {
             const o = COLS[cId];
             if (!o) return '';
+            const nombreSubEsp = COL_ESPANOL[cId] || o.nome;
             return `
               <button class="subchip ${subcol === cId ? 'active' : ''} js-nav" data-view="category" data-param="${cat.id}" data-subcol="${cId}">
-                ${o.nome} <span class="subchip-count">(${o.n})</span>
+                ${nombreSubEsp} <span class="subchip-count">(${o.n})</span>
               </button>
             `;
           }).join('')}
         </div>
 
-        <!-- Banner de Download da Subcoleção (se selecionada) -->
+        <!-- Banner de Descarga de Subcolección (si está seleccionada) -->
         ${subcol && COLS[subcol] ? `
           <div class="download-pack-banner">
             <div class="dpb-info">
-              <span class="dpb-tag">📁 DOWNLOAD DO PACOTE</span>
-              <h3 class="dpb-title">Baixar Coleção "${COLS[subcol].nome}" em ${currentFmt}</h3>
-              <p class="dpb-subtitle">Baixe todas as ${COLS[subcol].n} matrizes desta coleção em um único arquivo ZIP. ${getZipWeight(subcol + '-' + currentFmt.toLowerCase()) ? `Tamanho: ${getZipWeight(subcol + '-' + currentFmt.toLowerCase())}.` : ''}</p>
+              <span class="dpb-tag">📁 DESCARGA DEL PAQUETE</span>
+              <h3 class="dpb-title">Descargar Colección "${COL_ESPANOL[subcol] || COLS[subcol].nome}" en ${currentFmt}</h3>
+              <p class="dpb-subtitle">Descarga las ${COLS[subcol].n} matrices de esta colección en un único archivo ZIP. ${getZipWeight(subcol + '-' + currentFmt.toLowerCase()) ? `Tamaño: ${getZipWeight(subcol + '-' + currentFmt.toLowerCase())}.` : ''}</p>
             </div>
             <div class="dpb-actions">
               <a class="btn-download-pack" href="${getColZipUrl(subcol, currentFmt)}" download>
-                <span>⬇</span> Baixar Pacote ZIP (${currentFmt})
+                <span>⬇</span> Descargar Paquete ZIP (${currentFmt})
               </a>
             </div>
           </div>
@@ -796,18 +883,19 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="matrix-grid ${currentFilters.viewMode === 'compact' ? 'compact' : ''}" id="matrixGridTarget"></div>
 
         <div class="load-more-container">
-          <button class="btn-load-more" id="btnLoadMore" style="display:none;">Carregar mais matrizes</button>
+          <button class="btn-load-more" id="btnLoadMore" style="display:none;">Cargar más matrices</button>
           <div class="remaining-counter" id="loadCounter"></div>
         </div>
       `;
       currentRoute.activeList = items;
     }
 
-    // ── VISTA: UMA COLEÇÃO ESPECÍFICA ──
+    // ── VISTA: COLECCIÓN ESPECÍFICA ──
     else if (view === 'collection') {
       const col = COLS[param];
       if (!col) { navigate('collections'); return; }
 
+      const nombreColEsp = COL_ESPANOL[col.id] || col.nome;
       const items = MATRIZES.filter(m => m[2] === col.id);
       const zipName = `${col.id}-${currentFmt.toLowerCase()}`;
       const zipWeight = getZipWeight(zipName);
@@ -815,29 +903,29 @@ document.addEventListener('DOMContentLoaded', () => {
       html += `
         <div style="margin-bottom: 20px;">
           <button class="btn-view-all js-nav" data-view="category" data-param="${col.cat}" style="margin-bottom:14px;">
-            &larr; Voltar para ${catNomeMap[col.cat] || 'Categoria'}
+            &larr; Volver a ${catNomeMap[col.cat] || 'Categoría'}
           </button>
           <div class="section-header" style="margin-bottom: 10px;">
             <div class="section-title-box">
               <span class="section-icon">📁</span>
               <div>
-                <h2 class="section-title">${col.nome}</h2>
-                <p style="font-size:0.92rem;color:var(--text-muted);">${fmtNum(col.n)} matrizes prontas</p>
+                <h2 class="section-title">${nombreColEsp}</h2>
+                <p style="font-size:0.92rem;color:var(--text-muted);">${fmtNum(col.n)} matrices listas</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Banner de Download da Coleção Completa -->
+        <!-- Banner de Descarga de Colección Completa -->
         <div class="download-pack-banner">
           <div class="dpb-info">
-            <span class="dpb-tag">📁 DOWNLOAD DO PACOTE COMPLETO</span>
-            <h3 class="dpb-title">Baixar a Coleção "${col.nome}" inteira em ${currentFmt}</h3>
-            <p class="dpb-subtitle">Receba todas as ${col.n} matrizes desta coleção organizadas em um arquivo ZIP. ${zipWeight ? `Tamanho: ${zipWeight}.` : ''}</p>
+            <span class="dpb-tag">📁 DESCARGA DEL PAQUETE COMPLETO</span>
+            <h3 class="dpb-title">Descargar la Colección "${nombreColEsp}" completa en ${currentFmt}</h3>
+            <p class="dpb-subtitle">Recibe todas las ${col.n} matrices de esta colección organizadas en un archivo ZIP. ${zipWeight ? `Tamaño: ${zipWeight}.` : ''}</p>
           </div>
           <div class="dpb-actions">
             <a class="btn-download-pack" href="${getColZipUrl(col.id, currentFmt)}" download>
-              <span>⬇</span> Baixar Pacote ZIP (${currentFmt})
+              <span>⬇</span> Descargar Paquete ZIP (${currentFmt})
             </a>
           </div>
         </div>
@@ -847,14 +935,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="matrix-grid ${currentFilters.viewMode === 'compact' ? 'compact' : ''}" id="matrixGridTarget"></div>
 
         <div class="load-more-container">
-          <button class="btn-load-more" id="btnLoadMore" style="display:none;">Carregar mais matrizes</button>
+          <button class="btn-load-more" id="btnLoadMore" style="display:none;">Cargar más matrices</button>
           <div class="remaining-counter" id="loadCounter"></div>
         </div>
       `;
       currentRoute.activeList = items;
     }
 
-    // ── VISTA: RESULTADOS DA BUSCA ──
+    // ── VISTA: RESULTADOS DE BÚSQUEDA ──
     else if (view === 'search') {
       const term = normalize(param || '');
       let results = [];
@@ -871,9 +959,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="section-title-box">
             <span class="section-icon">🔍</span>
             <div>
-              <h2 class="section-title">Busca: "${param}"</h2>
+              <h2 class="section-title">Búsqueda: "${param}"</h2>
               <p style="font-size:0.92rem;color:var(--text-muted);">
-                ${results.length > 0 ? `${fmtNum(results.length)} matriz${results.length > 1 ? 'es' : ''} encontrada${results.length > 1 ? 's' : ''}` : 'Nenhuma matriz encontrada'}
+                ${results.length > 0 ? `${fmtNum(results.length)} matriz${results.length > 1 ? 'es' : ''} encontrada${results.length > 1 ? 's' : ''}` : 'Ninguna matriz encontrada'}
               </p>
             </div>
           </div>
@@ -884,10 +972,10 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `
           <div class="empty-state-box">
             <span class="empty-icon">🔍🧸</span>
-            <h3 class="empty-title">Não encontramos matrizes com esse termo</h3>
-            <p class="empty-desc">Tente buscar por palavras mais simples como "urso", "leao", "flor", "letra", "nome" ou explore as categorias abaixo.</p>
+            <h3 class="empty-title">No encontramos matrices con ese término</h3>
+            <p class="empty-desc">Intenta buscar con palabras más simples como "oso", "león", "safari", "flor", "alfabeto", "nombre" o explora las categorías abajo.</p>
             <button class="btn-search-action js-nav" data-view="categories" style="margin:0 auto;display:inline-flex;">
-              Explorar Categorias
+              Explorar Categorías
             </button>
           </div>
         `;
@@ -896,7 +984,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${renderFiltersToolbar()}
           <div class="matrix-grid ${currentFilters.viewMode === 'compact' ? 'compact' : ''}" id="matrixGridTarget"></div>
           <div class="load-more-container">
-            <button class="btn-load-more" id="btnLoadMore" style="display:none;">Carregar mais matrizes</button>
+            <button class="btn-load-more" id="btnLoadMore" style="display:none;">Cargar más matrices</button>
             <div class="remaining-counter" id="loadCounter"></div>
           </div>
         `;
@@ -913,15 +1001,15 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="section-title-box">
             <span class="section-icon">♥</span>
             <div>
-              <h2 class="section-title">Meus Bordados Favoritos</h2>
+              <h2 class="section-title">Mis Bordados Favoritos</h2>
               <p style="font-size:0.92rem;color:var(--text-muted);">
-                ${favItems.length > 0 ? `${favItems.length} matriz${favItems.length > 1 ? 'es' : ''} salva${favItems.length > 1 ? 's' : ''} no seu aparelho` : 'Você ainda não salvou matrizes'}
+                ${favItems.length > 0 ? `${favItems.length} matriz${favItems.length > 1 ? 'es' : ''} guardada${favItems.length > 1 ? 's' : ''} en tu dispositivo` : 'Aún no has guardado matrices'}
               </p>
             </div>
           </div>
           ${favItems.length > 0 ? `
             <button class="btn-view-all js-clear-favs" style="color:var(--rose-dark);border-color:var(--rose-border);">
-              Limpar Lista
+              Limpiar Lista
             </button>
           ` : ''}
         </div>
@@ -931,8 +1019,8 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `
           <div class="empty-state-box">
             <span class="empty-icon">💖</span>
-            <h3 class="empty-title">Sua lista de favoritos está vazia</h3>
-            <p class="empty-desc">Toque no coraçãozinho (♥) no canto de qualquer matriz para guardar aqui e acessar rapidamente quando for bordar.</p>
+            <h3 class="empty-title">Tu lista de favoritos está vacía</h3>
+            <p class="empty-desc">Toca el corazoncito (♥) en la esquina de cualquier matriz para guardarla aquí y acceder rápido cuando vayas a bordar.</p>
             <button class="btn-search-action js-nav" data-view="categories" style="margin:0 auto;display:inline-flex;">
               Ver Catálogo Completo
             </button>
@@ -943,7 +1031,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${renderFiltersToolbar()}
           <div class="matrix-grid ${currentFilters.viewMode === 'compact' ? 'compact' : ''}" id="matrixGridTarget"></div>
           <div class="load-more-container">
-            <button class="btn-load-more" id="btnLoadMore" style="display:none;">Carregar mais matrizes</button>
+            <button class="btn-load-more" id="btnLoadMore" style="display:none;">Cargar más matrices</button>
             <div class="remaining-counter" id="loadCounter"></div>
           </div>
         `;
@@ -951,95 +1039,95 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // ── VISTA: COMO USAR / TUTORIAL DE BORDADO ──
+    // ── VISTA: CÓMO BORDAR (GUÍA PASO A PASO) ──
     else if (view === 'help') {
       html += `
         <div class="section-header">
           <div class="section-title-box">
             <span class="section-icon">🪡</span>
             <div>
-              <h2 class="section-title">Guia Prático da Artesã: Como Bordar com Perfeição</h2>
-              <p style="font-size:0.92rem;color:var(--text-muted);">Passo a passo simples para transferir e bordar qualquer matriz do seu acervo</p>
+              <h2 class="section-title">Guía Práctica de la Artesana: Cómo Bordar con Perfección</h2>
+              <p style="font-size:0.92rem;color:var(--text-muted);">Paso a paso sencillo para transferir y bordar cualquier matriz de tu catálogo</p>
             </div>
           </div>
         </div>
 
         <div class="tutorial-steps-list">
           <div class="tutorial-step-card">
-            <h4 class="step-card-title">1. Escolha o Formato da Sua Máquina</h4>
-            <p class="step-card-desc">Antes de baixar, confirme a marca da sua máquina (Brother usa <b>.PES</b>, Janome usa <b>.JEF</b>, Singer usa <b>.XXX</b>). Aqui na plataforma, basta selecionar uma vez que todos os botões já baixam no formato certo.</p>
+            <h4 class="step-card-title">1. Elige el Formato de tu Máquina</h4>
+            <p class="step-card-desc">Antes de descargar, confirma la marca de tu máquina bordadora (Brother usa <b>.PES</b>, Janome usa <b>.JEF</b>, Singer usa <b>.XXX</b>). Aquí en la plataforma, con seleccionarlo una vez todos los botones descargan en el formato correcto.</p>
           </div>
 
           <div class="tutorial-step-card">
-            <h4 class="step-card-title">2. Baixe a Matriz ou Coleção</h4>
-            <p class="step-card-desc">Clique no botão de download. Se baixar matriz avulsa, o arquivo vai direto para a pasta Downloads. Se baixar o pacote ZIP, clique com o botão direito e escolha "Extrair tudo".</p>
+            <h4 class="step-card-title">2. Descarga la Matriz o Colección</h4>
+            <p class="step-card-desc">Haz clic en el botón de descarga. Si descargas una matriz individual, el archivo irá a tu carpeta de Descargas. Si descargas el paquete ZIP, haz clic derecho y selecciona "Extraer todo".</p>
           </div>
 
           <div class="tutorial-step-card">
-            <h4 class="step-card-title">3. Passe o Arquivo para a Raiz do Pen Drive</h4>
-            <p class="step-card-desc">Coloque o arquivo na <b>raiz do pen drive</b> (fora de qualquer pasta). Muitas máquinas de bordar não reconhecem arquivos colocados dentro de subpastas ou com nomes muito longos.</p>
+            <h4 class="step-card-title">3. Pasa el Archivo a la Raíz de tu Memoria USB (Pendrive)</h4>
+            <p class="step-card-desc">Coloca el archivo en la <b>raíz de la memoria USB</b> (fuera de cualquier subcarpeta). Muchas máquinas bordadoras no reconocen archivos colocados dentro de carpetas o con nombres excesivamente largos.</p>
           </div>
 
           <div class="tutorial-step-card">
-            <h4 class="step-card-title">4. Encaixe na Máquina de Bordar</h4>
-            <p class="step-card-desc">Com a máquina ligada, insira o pen drive na porta USB. Abra a aba de memória USB no visor digital e selecione a matriz desejada.</p>
+            <h4 class="step-card-title">4. Conéctala a tu Máquina Bordadora</h4>
+            <p class="step-card-desc">Con la máquina encendida, inserta la memoria USB en el puerto USB. Abre la pestaña de memoria USB en la pantalla digital y selecciona tu diseño.</p>
           </div>
 
           <div class="tutorial-step-card">
-            <h4 class="step-card-title">5. Prepare o Tecido, Entretela e Borde</h4>
-            <p class="step-card-desc">Para enxovais e fraldas, use entretela rasga-fácil dupla. Para toalhas aveludadas, use um plástico filme hidrossolúvel por cima para que os pontos fiquem nítidos e fofinhos!</p>
+            <h4 class="step-card-title">5. Prepara la Tela, Estabilizador y ¡a Bordar!</h4>
+            <p class="step-card-desc">Para ajuar y ropa de bebé, usa entretela / estabilizador desgarro fácil doble (tear-away). Para toallas afelpadas, coloca una película hidrosoluble encima para que las puntadas queden nítidas y esponjosas.</p>
           </div>
         </div>
 
-        <!-- Dicas de Ouro -->
+        <!-- Consejos de Oro -->
         <div class="section-header" style="margin-top: 36px;">
           <div class="section-title-box">
             <span class="section-icon">💡</span>
-            <h3 class="section-title">Dicas de Ouro para o Bordado Ficar Lindo</h3>
+            <h3 class="section-title">Consejos de Oro para que tus Bordados Queden Bellísimos</h3>
           </div>
         </div>
         <div class="artisan-tips-grid">
           <div class="tip-card">
             <div class="tip-card-header">
               <span>🧵</span>
-              <h4>Tensão da Linha</h4>
+              <h4>Tensión del Hilo</h4>
             </div>
-            <p class="tip-card-desc">Para matrizes com muitos detalhes, mantenha a linha da bobina branca de gramatura 60 ou 70 e ajuste a tensão para que a linha de cima não puxe o verso.</p>
+            <p class="tip-card-desc">Para matrices con muchos detalles, mantén el hilo de la bobina blanco de gramaje 60 o 70 y ajusta la tensión para que el hilo superior no jale el reverso.</p>
           </div>
 
           <div class="tip-card">
             <div class="tip-card-header">
               <span>🪡</span>
-              <h4>Agulha Ideal</h4>
+              <h4>Aguja Ideal</h4>
             </div>
-            <p class="tip-card-desc">Use agulha 75/11 ponta bola para malhas, bodies de bebê e fraldinhas. Para tecidos planos ou toalhas, agulha 80/12 ou 90/14 borda perfeitamente.</p>
+            <p class="tip-card-desc">Usa aguja 75/11 punta bola para telas de punto, bodys de bebé y batitas. Para telas planas o toallas, una aguja 80/12 o 90/14 borda a la perfección.</p>
           </div>
 
           <div class="tip-card">
             <div class="tip-card-header">
               <span>📐</span>
-              <h4>Confira o Bastidor</h4>
+              <h4>Revisa el Bastidor</h4>
             </div>
-            <p class="tip-card-desc">Nunca tente bordar uma matriz maior que a área do seu bastidor. Em cada card indicamos a sugestão ideal (10x10, 13x18, 14x14, etc.).</p>
+            <p class="tip-card-desc">Nunca intentes bordar un diseño más grande que el área de tu bastidor. En cada tarjeta te indicamos el tamaño sugerido (10x10, 13x18, 14x14, etc.).</p>
           </div>
         </div>
 
         <div class="format-notice-bar" style="margin-top: 30px;">
           <div class="fnb-text">
-            <span>Dúvida sobre qual formato escolher?</span>
-            <b>Sua máquina atual: ${currentFmt}</b>
+            <span>¿Dudas sobre qué formato elegir?</span>
+            <b>Tu máquina actual: ${currentFmt}</b>
           </div>
           <button class="btn-change-format js-open-machine-modal">
-            Alterar Marca / Formato
+            Cambiar Marca / Formato
           </button>
         </div>
       `;
     }
 
-    // Insere o HTML base
+    // Inserta el HTML base
     viewEl.innerHTML = html;
 
-    // Se houver uma lista de matrizes para exibir, aplica filtros e renderiza em lote
+    // Si hay una lista activa de matrices, aplica filtros y renderiza en lote
     const gridTarget = document.getElementById('matrixGridTarget');
     if (gridTarget && currentRoute.activeList) {
       const processed = applyFiltersAndSorting(currentRoute.activeList);
@@ -1047,7 +1135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ══ MODAL DE DETALHES DA MATRIZ ══
+  // ══ MODAL DE DETALLES DE LA MATRIZ ══
   const openMatrixModal = (id) => {
     const m = MATRIZES.find(item => item[0] === id);
     if (!m) return;
@@ -1056,15 +1144,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const isFav = favorites.includes(m[0]);
     const hoop = getSuggestedHoop(m[4], m[5]);
     const estTime = getEstimatedTime(m[6], m[7]);
-    const colObj = COLS[m[2]] || { nome: 'Coleção' };
+    const colNombre = COL_ESPANOL[m[2]] || (COLS[m[2]] ? COLS[m[2]].nome : 'Colección');
     const currentFmt = userFormat || 'PES';
 
     modalMatrixWindowEl.innerHTML = `
-      <button class="modal-close-btn js-close-modal" aria-label="Fechar">&times;</button>
+      <button class="modal-close-btn js-close-modal" aria-label="Cerrar">&times;</button>
       
       <div style="text-align:center;">
         <span style="font-size:0.8rem;font-weight:800;color:var(--rose-primary);background:var(--rose-light);padding:3px 12px;border-radius:var(--r-pill);text-transform:uppercase;letter-spacing:0.04em;">
-          ${colObj.nome}
+          ${colNombre}
         </span>
         <h3 style="font-family:var(--font-heading);font-size:1.45rem;color:var(--text-main);margin-top:6px;">${m[1]}</h3>
       </div>
@@ -1077,7 +1165,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="modal-specs-grid">
         <div class="spec-item">
           <span class="spec-val">${fmtCm(m[4], m[5]).replace(' cm', '')}</span>
-          <span class="spec-label">Dimensão (cm)</span>
+          <span class="spec-label">Dimensión (cm)</span>
         </div>
         <div class="spec-item">
           <span class="spec-val">${hoop}</span>
@@ -1085,19 +1173,19 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="spec-item">
           <span class="spec-val">${fmtNum(m[6])}</span>
-          <span class="spec-label">Total Pontos</span>
+          <span class="spec-label">Total Puntadas</span>
         </div>
         <div class="spec-item">
-          <span class="spec-val">${m[7]} cores</span>
+          <span class="spec-val">${m[7]} col</span>
           <span class="spec-label">~ ${estTime}</span>
         </div>
       </div>
 
       <p style="font-size:0.88rem;font-weight:800;color:var(--text-main);text-align:center;margin-bottom:8px;">
-        Baixar matriz individual no formato desejado:
+        Descargar matriz individual en el formato deseado:
       </p>
 
-      <!-- Botões de Formatos -->
+      <!-- Botones de Formatos -->
       <div class="formats-download-grid">
         ${ACERVO.formatos.map(fmt => {
           const isRec = fmt === currentFmt;
@@ -1107,7 +1195,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return `
             <a class="format-btn ${isRec ? 'recommended' : ''}" href="${url}" download>
               <span>${fmt}</span>
-              <small>${isRec ? 'Sua Máquina' : brand}</small>
+              <small>${isRec ? 'Tu Máquina' : brand}</small>
             </a>
           `;
         }).join('')}
@@ -1115,30 +1203,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <div style="display:flex;gap:10px;margin-top:14px;">
         <button class="btn-card-download js-toggle-fav" data-fav-id="${m[0]}" style="flex:1;background:var(--rose-light);color:var(--rose-dark);font-size:0.9rem;padding:12px;">
-          <span>${isFav ? '♥ Salvo nos Favoritos' : '♡ Adicionar aos Favoritos'}</span>
+          <span>${isFav ? '♥ Guardado en Favoritos' : '♡ Agregar a Favoritos'}</span>
         </button>
-        <button class="btn-card-quickview js-copy-link" data-id="${m[0]}" style="width:auto;padding:0 16px;border-radius:var(--r-pill);font-size:0.86rem;font-weight:700;" title="Copiar link desta matriz">
-          🔗 Compartilhar
+        <button class="btn-card-quickview js-copy-link" data-id="${m[0]}" style="width:auto;padding:0 16px;border-radius:var(--r-pill);font-size:0.86rem;font-weight:700;" title="Copiar enlace de esta matriz">
+          🔗 Compartir
         </button>
       </div>
 
       <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:14px;">
-        Dica: Baixe no formato recomendado para garantir total compatibilidade com a sua máquina.
+        Consejo: Descarga en el formato recomendado para garantizar total compatibilidad con tu máquina bordadora.
       </p>
     `;
 
     modalMatrixEl.classList.add('active');
   };
 
-  // ══ MODAL DE SELEÇÃO DE MÁQUINA ══
+  // ══ MODAL DE SELECCIÓN DE MÁQUINA ══
   const openMachineModal = (canClose = true) => {
     sound.playChime('pop');
     modalMachineWindowEl.innerHTML = `
-      ${canClose ? '<button class="modal-close-btn js-close-modal" aria-label="Fechar">&times;</button>' : ''}
+      ${canClose ? '<button class="modal-close-btn js-close-modal" aria-label="Cerrar">&times;</button>' : ''}
       <div style="text-align:center;margin-bottom:18px;">
         <span style="font-size:2.2rem;display:block;margin-bottom:4px;">🧵🪡</span>
-        <h3 style="font-family:var(--font-heading);font-size:1.4rem;color:var(--text-main);">Qual é a marca da sua máquina?</h3>
-        <p style="font-size:0.9rem;color:var(--text-muted);margin-top:4px;">Assim a plataforma já deixa todos os botões prontos no formato ideal pra você!</p>
+        <h3 style="font-family:var(--font-heading);font-size:1.4rem;color:var(--text-main);">¿Cuál es la marca de tu máquina bordadora?</h3>
+        <p style="font-size:0.9rem;color:var(--text-muted);margin-top:4px;">¡Así la plataforma deja todos los botones listos en el formato ideal para ti!</p>
       </div>
 
       <div class="machine-cards-list">
@@ -1157,28 +1245,28 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <p style="font-size:0.78rem;color:var(--text-light);text-align:center;margin-top:16px;">
-        Não tem certeza? Escolha <b>Brother (.PES)</b>. É o formato mais compatível e você pode alterar quando quiser!
+        ¿No estás segura? Elige <b>Brother (.PES)</b>. ¡Es el formato más compatible y puedes cambiarlo cuando quieras aquí mismo!
       </p>
     `;
 
     modalMachineEl.classList.add('active');
   };
 
-  // ══ MODAL DE DOWNLOAD DO ACERVO COMPLETO ══
+  // ══ MODAL DE DESCARGA DEL CATÁLOGO COMPLETO ══
   const openAcervoCompletoModal = () => {
     sound.playChime('pop');
     modalMatrixWindowEl.innerHTML = `
-      <button class="modal-close-btn js-close-modal" aria-label="Fechar">&times;</button>
+      <button class="modal-close-btn js-close-modal" aria-label="Cerrar">&times;</button>
       <div style="text-align:center;margin-bottom:18px;">
         <span style="font-size:2.4rem;display:block;margin-bottom:6px;">📦✨</span>
-        <h3 style="font-family:var(--font-heading);font-size:1.45rem;color:var(--text-main);">Baixar Todo o Acervo de Uma Vez</h3>
+        <h3 style="font-family:var(--font-heading);font-size:1.45rem;color:var(--text-main);">Descargar Todo el Catálogo de una Vez</h3>
         <p style="font-size:0.92rem;color:var(--text-muted);margin-top:4px;">
-          Todas as ${fmtNum(ACERVO.total)} matrizes organizadas por pastas em um único arquivo ZIP.
+          Todas las ${fmtNum(ACERVO.total)} matrices organizadas por carpetas en un único archivo ZIP.
         </p>
       </div>
 
       <div style="background:var(--bg-page);border:1.5px dashed var(--rose-border);border-radius:var(--r-lg);padding:14px 18px;margin-bottom:18px;font-size:0.86rem;color:var(--text-muted);line-height:1.5;">
-        💡 <b>Dica de Artesã:</b> Como o acervo completo é bem recheado (40MB a 150MB dependendo do formato), recomendamos baixar conectado ao Wi-Fi. Extraia o ZIP no seu computador antes de passar para o pen drive.
+        💡 <b>Consejo de Artesana:</b> Como el catálogo completo es muy amplio (40MB a 150MB según el formato), recomendamos descargarlo conectada a Wi-Fi. Extrae el ZIP en tu computadora antes de pasarlo a tu memoria USB o pendrive.
       </div>
 
       <div class="machine-cards-list">
@@ -1195,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="msc-desc">${mq.modelos} ${weight ? `• ${weight}` : ''}</span>
               </div>
               <span class="msc-format-pill" style="display:flex;align-items:center;gap:5px;">
-                <span>⬇</span> Baixar
+                <span>⬇</span> Descargar
               </span>
             </a>
           `;
@@ -1206,7 +1294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalMatrixEl.classList.add('active');
   };
 
-  // Fechar qualquer modal
+  // Cerrar cualquier modal
   const closeModal = () => {
     modalMatrixEl.classList.remove('active');
     modalMachineEl.classList.remove('active');
@@ -1216,13 +1304,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', (e) => {
     const target = e.target;
 
-    // Fechar Modal (X ou clique fora)
+    // Cerrar Modal (botón X o clic afuera)
     if (target.closest('.js-close-modal') || target === modalMatrixEl || target === modalMachineEl) {
       closeModal();
       return;
     }
 
-    // Favoritar / Desfavoritar (prioridade máxima sobre o clique no card!)
+    // Favoritar / Desfavoritar (prioridad máxima sobre clic en tarjeta)
     const favBtn = target.closest('.js-toggle-fav');
     if (favBtn) {
       e.stopPropagation();
@@ -1232,42 +1320,42 @@ document.addEventListener('DOMContentLoaded', () => {
       if (idx > -1) {
         favorites.splice(idx, 1);
         favBtn.classList.remove('active');
-        showToast('Removido dos favoritos', '♡');
+        showToast('Eliminado de favoritos', '♡');
       } else {
         favorites.push(id);
         favBtn.classList.add('active');
         sound.playChime('heart');
-        showToast('Adicionado aos favoritos! ♥', '💖');
+        showToast('¡Agregado a favoritos! ♥', '💖');
       }
       Storage.set('favorites', favorites);
       updateFavCount();
 
-      // Se estiver na tela de favoritos e removeu, atualiza a tela
+      // Si está en favoritos y lo quitó, refresca la vista
       if (currentRoute.view === 'favorites') {
         renderView();
       }
       return;
     }
 
-    // Alternar Sons
+    // Alternar Sonidos
     const soundToggle = target.closest('.js-toggle-sound');
     if (soundToggle) {
       sound.enabled = !sound.enabled;
       Storage.set('sound_enabled', sound.enabled);
       document.querySelectorAll('.js-sound-label').forEach(el => {
-        el.textContent = sound.enabled ? 'Sons: Ativos 🔔' : 'Sons: Mudos 🔕';
+        el.textContent = sound.enabled ? 'Sonidos: Activos 🔔' : 'Sonidos: Silencio 🔕';
       });
-      showToast(sound.enabled ? 'Efeitos sonoros ativados! 🔔' : 'Sons desativados! 🔕');
+      showToast(sound.enabled ? '¡Efectos de sonido activados! 🔔' : '¡Sonidos desactivados! 🔕');
       return;
     }
 
-    // Voltar ao Topo
+    // Volver Arriba
     if (target.closest('.js-back-to-top')) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    // Abrir Modal de Acervo Completo
+    // Abrir Modal de Catálogo Completo
     if (target.closest('.js-open-acervo-modal')) {
       openAcervoCompletoModal();
       return;
@@ -1279,7 +1367,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Selecionar Máquina no Modal
+    // Seleccionar Máquina en el Modal
     const machineSelect = target.closest('.js-select-machine');
     if (machineSelect) {
       const fmt = machineSelect.dataset.fmt;
@@ -1288,12 +1376,12 @@ document.addEventListener('DOMContentLoaded', () => {
       updateMachineDisplay();
       sound.playChime('pop');
       closeModal();
-      showToast(`Máquina configurada para ${fmt}! 🧵`);
+      showToast(`¡Máquina configurada para ${fmt}! 🧵`);
       renderView();
       return;
     }
 
-    // Navegação via botões .js-nav
+    // Navegación vía botones .js-nav
     const navBtn = target.closest('.js-nav');
     if (navBtn) {
       e.preventDefault();
@@ -1304,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Abrir Modal de Matriz (apenas quando não clicou em favoritar ou baixar)
+    // Abrir Modal de Matriz
     const matrixOpener = target.closest('.js-open-matrix');
     if (matrixOpener) {
       const id = matrixOpener.dataset.matrixId;
@@ -1312,39 +1400,39 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Limpar todos os favoritos
+    // Limpiar todos los favoritos
     if (target.closest('.js-clear-favs')) {
-      if (confirm('Deseja limpar todos os seus favoritos?')) {
+      if (confirm('¿Deseas vaciar tu lista de favoritos?')) {
         favorites = [];
         Storage.set('favorites', favorites);
         updateFavCount();
-        showToast('Lista de favoritos limpa!');
+        showToast('¡Lista de favoritos vaciada!');
         renderView();
       }
       return;
     }
 
-    // Copiar Link
+    // Copiar Enlace
     const copyBtn = target.closest('.js-copy-link');
     if (copyBtn) {
       const id = copyBtn.dataset.id;
       const shareUrl = `${window.location.origin}${window.location.pathname}#mat=${id}`;
       navigator.clipboard?.writeText(shareUrl).then(() => {
-        showToast('Link copiado com sucesso! 🔗');
+        showToast('¡Enlace copiado con éxito! 🔗');
       }).catch(() => {
-        prompt('Copie o link:', shareUrl);
+        prompt('Copia el enlace:', shareUrl);
       });
       return;
     }
 
-    // Carregar mais matrizes (Load More)
+    // Cargar más matrices (Load More)
     if (target.closest('#btnLoadMore') && renderNextBatch) {
       renderNextBatch();
       return;
     }
   });
 
-  // ══ EVENT DELEGATION PARA FILTROS NA TELA ══
+  // ══ EVENT DELEGATION PARA FILTROS ══
   document.body.addEventListener('change', (e) => {
     const target = e.target;
 
@@ -1363,7 +1451,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Alternar modo de visualização (Normal vs Compacto)
+  // Alternar modo de visualización (Normal vs Compacto)
   document.body.addEventListener('click', (e) => {
     const vmt = e.target.closest('.js-view-mode');
     if (vmt) {
@@ -1378,7 +1466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Recarrega apenas a grade com novos filtros sem recarregar topo
+  // Recarga sólo la grilla con nuevos filtros
   const rerenderGrid = () => {
     const gridTarget = document.getElementById('matrixGridTarget');
     if (gridTarget && currentRoute.activeList) {
@@ -1388,7 +1476,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Teclado (ESC fecha modais e gaveta)
+  // Teclado (ESC cierra modales y gaveta)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeModal();
@@ -1396,7 +1484,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ══ LEITURA INICIAL DA URL / HASH ══
+  // ══ LECTURA INICIAL DE LA URL / HASH ══
   const handleInitialHash = () => {
     const hash = window.location.hash.replace(/^#/, '');
     if (!hash) {
@@ -1418,10 +1506,10 @@ document.addEventListener('DOMContentLoaded', () => {
     navigate(v, p, s);
   };
 
-  // ══ INICIALIZAÇÃO DA APLICAÇÃO ══
+  // ══ INICIALIZACIÓN DE LA APLICACIÓN ══
   updateFavCount();
 
-  // Se o usuário nunca escolheu o formato da máquina, abre modal acolhedor
+  // Si la usuaria nunca seleccionó su máquina, abre modal acogedor
   if (!userFormat) {
     userFormat = 'PES';
     Storage.set('machine_fmt', 'PES');
@@ -1429,7 +1517,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateMachineDisplay();
 
-  // Botão flutuante de voltar ao topo
+  // Botón flotante volver arriba
   const btnBackToTop = document.getElementById('btnBackToTop');
   window.addEventListener('scroll', () => {
     if (btnBackToTop) {
