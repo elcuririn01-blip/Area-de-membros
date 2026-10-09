@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Aluno · Bordado Perfeito Infantil</title>
+  <meta name="description" content="Área de membros completa com mais de 3.700 matrizes de bordado infantil organizadas para a sua máquina de bordar.">
+  <meta name="theme-color" content="#F47291">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧸</text></svg>">
+  
+  <!-- Fontes Google: Fredoka (Títulos fofos) e Nunito (Leitura aconchegante) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Folha de Estilos (Sem nenhum efeito borrado) -->
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+
+  <!-- Backdrop para Drawer Mobile -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <div class="app-container">
+
+    <!-- ══ BARRA LATERAL (DESKTOP / GAVETA MOBILE) ══ -->
+    <aside class="sidebar" id="sidebar">
+      
+      <!-- Botão Fechar Mobile -->
+      <button class="drawer-close-btn js-close-drawer" id="btnCloseDrawer" aria-label="Fechar menu" title="Fechar menu">✕</button>
+
+      <!-- Logo & Marca Artesanal -->
+      <div class="brand-wrapper">
+        <div class="brand-icon-box" aria-hidden="true">
+          🧸
+        </div>
+        <span class="brand-title">Bordado<br>Perfeito</span>
+        <span class="brand-badge">Cantinho Infantil ✨</span>
+      </div>
+
+      <!-- Menu Principal de Navegação -->
+      <nav class="nav-menu" id="navMenu">
+        <button class="nav-item active js-nav" data-view="home">
+          <span class="icon">🏠</span>
+          <span>Início</span>
+        </button>
+
+        <button class="nav-item js-nav" data-view="categories">
+          <span class="icon">🧸</span>
+          <span>Categorias</span>
+        </button>
+
+        <button class="nav-item js-nav" data-view="collections">
+          <span class="icon">📁</span>
+          <span>Coleções</span>
+        </button>
+
+        <button class="nav-item js-nav" data-view="favorites">
+          <span class="icon">♥</span>
+          <span>Meus Favoritos</span>
+          <span class="badge-count js-fav-count"></span>
+        </button>
+
+        <button class="nav-item js-nav" data-view="help">
+          <span class="icon">🪡</span>
+          <span>Como Bordar</span>
+        </button>
+
+        <button class="nav-item js-open-acervo-modal" style="color:var(--rose-dark);background:var(--rose-light);">
+          <span class="icon">📦</span>
+          <span>Baixar Tudo (ZIP)</span>
+        </button>
+      </nav>
+
+      <!-- Card de Máquina Configurada -->
+      <div class="sidebar-machine-card">
+        <div class="smc-top">
+          <span class="smc-label">Sua Máquina</span>
+          <span class="smc-fmt js-active-format">PES</span>
+        </div>
+        <button class="smc-btn js-open-machine-modal">
+          Trocar Marca / Formato
+        </button>
+      </div>
+
+      <!-- Botão de Sons Fofos -->
+      <button class="sound-toggle-btn js-toggle-sound" title="Ligar ou desligar sons fofos">
+        <span class="js-sound-label">Sons: Ativos 🔔</span>
+      </button>
+
+      <!-- Rodapé da Barra Lateral -->
+      <div class="sidebar-footer">
+        <b>Acesso Vitalício Garantido</b><br>
+        Sem mensalidades · Todas as matrizes liberadas
+      </div>
+    </aside>
+
+    <!-- ══ ÁREA DE CONTEÚDO PRINCIPAL ══ -->
+    <main class="main-content">
+
+      <!-- Topbar Mobile -->
+      <header class="mobile-topbar">
+        <button class="btn-icon" id="btnOpenMenu" aria-label="Abrir menu de navegação">
+          ☰
+        </button>
+        <div class="mobile-brand">
+          🧸 <span>Bordado</span> Perfeito
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-icon js-open-acervo-modal" aria-label="Baixar Acervo Completo" title="Baixar Tudo">
+            <span>📦</span>
+          </button>
+          <button class="btn-icon js-open-machine-modal" aria-label="Alterar formato de máquina" title="Sua Máquina">
+            <span class="js-active-format" style="font-size:0.78rem;font-weight:800;">PES</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+
+        <!-- Barra de Busca Global Instantânea -->
+        <div style="margin-bottom: 24px;">
+          <form class="search-container" id="searchForm" autocomplete="off">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input 
+              type="search" 
+              class="search-input" 
+              id="searchInput" 
+              placeholder="Buscar por urso, leão, safari, flor, alfabeto, nome, 10x10..." 
+              aria-label="Buscar matrizes de bordado"
+            >
+            <button type="button" class="search-clear" id="searchClear" aria-label="Limpar busca">&times;</button>
+            <button type="submit" class="btn-search-action">
+              <span>Buscar</span>
+            </button>
+          </form>
+
+          <!-- Chips de Sugestões Fofas -->
+          <div class="quick-tags">
+            <span class="quick-tag-label">Ideias rápidas:</span>
+            <button type="button" class="quick-tag js-quick-search" data-query="urso">🧸 Ursinhos</button>
+            <button type="button" class="quick-tag js-quick-search" data-query="safari">🦁 Safári</button>
+            <button type="button" class="quick-tag js-quick-search" data-query="bebe">🍼 Enxoval</button>
+            <button type="button" class="quick-tag js-quick-search" data-query="flor">🌸 Jardim</button>
+            <button type="button" class="quick-tag js-quick-search" data-query="alfabeto">🔤 Alfabetos</button>
+            <button type="button" class="quick-tag js-quick-search" data-query="dino">🦕 Dinossauros</button>
+            <button type="button" class="quick-tag js-quick-search" data-query="princesa">👑 Princesas</button>
+          </div>
+        </div>
+
+        <!-- Ponto de Injeção das Telas Dinâmicas (SPA) -->
+        <div id="view"></div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ══ MODAL DE FICHA TÉCNICA DA MATRIZ ══ -->
+  <div class="modal-overlay" id="modalMatrix" role="dialog" aria-modal="true">
+    <div class="modal-window" id="modalMatrixWindow"></div>
+  </div>
+
+  <!-- ══ MODAL SELETOR DE MÁQUINA DE BORDAR ══ -->
+  <div class="modal-overlay" id="modalMachine" role="dialog" aria-modal="true">
+    <div class="modal-window" id="modalMachineWindow"></div>
+  </div>
+
+  <!-- Botão Flutuante Voltar ao Topo -->
+  <button class="btn-back-to-top js-back-to-top" id="btnBackToTop" aria-label="Voltar ao topo" title="Voltar ao topo">▲</button>
+
+  <!-- Barra de Navegação Inferior para Celular / Telas Compactas -->
+  <nav class="mobile-bottom-nav">
+    <button class="mbn-item js-nav active" data-view="home">
+      <span class="mbn-icon">🏠</span>
+      <span class="mbn-label">Início</span>
+    </button>
+    <button class="mbn-item js-nav" data-view="categories">
+      <span class="mbn-icon">🧸</span>
+      <span class="mbn-label">Categorias</span>
+    </button>
+    <button class="mbn-item js-nav" data-view="collections">
+      <span class="mbn-icon">📁</span>
+      <span class="mbn-label">Coleções</span>
+    </button>
+    <button class="mbn-item js-nav" data-view="favorites">
+      <span class="mbn-icon">♥</span>
+      <span class="mbn-label">Favoritos</span>
+    </button>
+    <button class="mbn-item js-open-menu-drawer" id="btnBottomMenu" aria-label="Abrir menu completo">
+      <span class="mbn-icon">☰</span>
+      <span class="mbn-label">Menu</span>
+    </button>
+  </nav>
+
+  <!-- Scripts: Catálogo de Dados Completo e Controlador -->
+  <script src="catalogo.js"></script>
+  <script src="app.js?v=4"></script>
+</body>
+</html>
